@@ -61,11 +61,13 @@ sequence_ (a:as) = do a
                       sequence as
 -}
 
+concatList list = intercalate "\n" list
+
 -- Intentos para ver cómo sacar cada rotación en una línea aparte...
 -- printKwic ts = [putStrLn t | t <- kwic ts]  -- esta funciona
-printKwic ts ns = map putStrLn (kwic ns ts) -- esta también funciona (es lo mismo...)
+printKwic ts ns = concatList (kwic ns ts) -- esta también funciona (es lo mismo...)
 
-printKwicTitles ts ns = map putStrLn (kwicTitles ns ts)
+printKwicTitles ts ns = concatList (kwic ns ts)
 
 askFileName message = do
     putStrLn message
@@ -87,5 +89,5 @@ main = do
   outputFile <- getNonExistingFile "Ingrese el nombre del archivo donde se espera la salida:"
   titlesList <- readFile titlesFile
   wordsList <- readFile wordsFile
-  sequence_ (printKwic (toWords titlesList) (words wordsList)) 
+  writeFile outputFile (printKwic (toWords titlesList) (words wordsList)) 
 
