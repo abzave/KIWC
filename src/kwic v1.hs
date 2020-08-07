@@ -21,8 +21,8 @@ type String = [Char] -- innecesario, es para beneficio del lector
 
 toWords :: [Char] -> [[Char]] -- String -> [String]
 toWords [] = []
-toWords (x:xs) | x == ' '  = toWords (dropWhile (' ' ==) xs)
-               | otherwise = (x:takeWhile (' ' /=) xs) : toWords (dropWhile (' ' /=) xs)
+toWords (x:xs) | x == ' '  = toWords (dropWhile ('\n' ==) xs)
+               | otherwise = (x:takeWhile ('\n' /=) xs) : toWords (dropWhile ('\n' /=) xs)
 
 -- rotations recibe un título, como lista de palabras, y produce todas las rotaciones, sin importar si hay palabras no significativas
 rotations xs = [ drop i xs ++ take i xs | i <- [0 .. n] ]
@@ -48,10 +48,10 @@ putSpaces xss = tail (concat (map (' ':) xss))
 sep xs = init xs ++ [last xs ++ " ><"]
 
 kwic notSignificants = nub . sort . concat . map pre
-       where pre ys = map putSpaces (sigRotations (sep (toWords ys)) notSignificants)
+       where pre ys = map putSpaces (sigRotations (sep (words ys)) notSignificants)
 
 kwicTitles notSignificants = nub . sort . concat . map pre
-             where pre ys = map putSpaces (titSigRotations (sep (toWords ys)) notSignificants)
+             where pre ys = map putSpaces (titSigRotations (sep (words ys)) notSignificants)
 
 -- sequence_ tomada de Hudak, Peterson, Fasel. A Gentle Introduction to Haskell 98
 {- sequence_ = foldr (>>) (return ())
@@ -63,9 +63,9 @@ sequence_ (a:as) = do a
 
 -- Intentos para ver cómo sacar cada rotación en una línea aparte...
 -- printKwic ts = [putStrLn t | t <- kwic ts]  -- esta funciona
-printKwic ts ns = map putStrLn (kwic ts ns) -- esta también funciona (es lo mismo...)
+printKwic ts ns = map putStrLn (kwic ns ts) -- esta también funciona (es lo mismo...)
 
-printKwicTitles ts ns = map putStrLn (kwicTitles ts ns)
+printKwicTitles ts ns = map putStrLn (kwicTitles ns ts)
 
 askFileName message = do
     putStrLn message
@@ -87,6 +87,5 @@ main = do
   outputFile <- getNonExistingFile "Ingrese el nombre del archivo donde se espera la salida:"
   titlesList <- readFile titlesFile
   wordsList <- readFile wordsFile
-  let titles = printKwic (words titlesList) (words wordsFile)
-  putStrLn "Adios"
+  sequence_ (printKwic (toWords titlesList) (words wordsList)) 
 
