@@ -21,10 +21,19 @@ type String = [Char] -- innecesario, es para beneficio del lector
 
 toWords :: [Char] -> [[Char]] -- String -> [String]
 toWords [] = []
-toWords (x:xs) | x == ' '  = toWords (dropWhile ('\n' ==) xs)
+toWords (x:xs) | x == '\n'  = toWords (dropWhile ('\n' ==) xs)
                | otherwise = (x:takeWhile ('\n' /=) xs) : toWords (dropWhile ('\n' /=) xs)
 
+splitWithStr x y = func x y [[]]
+    where
+        func x [] z = reverse $ map (reverse) z
+        func x (y:ys) (z:zs) = if (take (length x) (y:ys)) == x then
+            func x (drop (length x) (y:ys)) ([]:(z:zs))
+        else
+            func x ys ((y:z):zs)
+
 -- rotations recibe un título, como lista de palabras, y produce todas las rotaciones, sin importar si hay palabras no significativas
+rotations :: [a] -> [[a]]
 rotations xs = [ drop i xs ++ take i xs | i <- [0 .. n] ]
                where n = (length xs) - 1
 
@@ -41,6 +50,7 @@ titSigRotations xs notSignificants = xs : [ drop i xs ++ take i xs | i <- [0 .. 
                    where n = (length xs) - 1
 
 -- putSpaces coloca un espacio en blanco entre las palabras presentes en una lista de palabras, y devuelve una hilera
+putSpaces [] = ""
 putSpaces xss = tail (concat (map (' ':) xss))
 
 -- sep pone una secuencia de caracteres, "><", para indicar que los caracteres a la izquierda de ">" están
@@ -60,6 +70,22 @@ sequence_ []     = return ()
 sequence_ (a:as) = do a
                       sequence as
 -}
+
+uppercaseSignificant stringList = [stringList !! 0] ++ [uppercaseWord ++ " " ++ originalList] ++ (drop 2 stringList) where
+  wordList = (words (stringList !! 1))
+  uppercaseWord = map toUpper ( wordList !! 0)
+  originalList = putSpaces (drop 1 wordList)
+
+fillSpaces :: Int -> [[Char]] -> [Char]
+fillSpaces targetLength stringList = if length (stringList !! 0) == targetLength 
+  then putSpaces (uppercaseSignificant stringList)
+  else fillSpaces targetLength ([" " ++ (stringList !! 0)] ++ (drop 1 stringList))
+
+getMaxLengthOfFirst rotations = maximum [length (x !! 0) | x <- rotations]
+
+alignedOutput rotationList = result where 
+  rotations = (map reverse (map (splitWithStr " ><") rotationList))
+  result = map (fillSpaces (getMaxLengthOfFirst rotations)) rotations
 
 concatList list = intercalate "\n" list
 
