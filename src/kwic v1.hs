@@ -109,11 +109,18 @@ getNonExistingFile message = do
   fileExists <- doesFileExist input
   if fileExists then (getNonExistingFile message) else return input
 
+getValidYN message = do 
+  input <- askFileName message
+  if (input == "y" || input == "n") then return input else (getNonExistingFile message)
+
 main = do
   titlesFile <- getExistingFile "Ingrese el nombre del archivo con los titulos:"
   wordsFile <- getExistingFile "Ingrese el nombre del archivo con las palabras no significativas:"
   outputFile <- getNonExistingFile "Ingrese el nombre del archivo donde se espera la salida:"
+  outputType <- getValidYN "¿Quiere usar la salida básica? (y/n):"
   titlesList <- readFile titlesFile
   wordsList <- readFile wordsFile
-  writeFile outputFile (printKwic (toWords titlesList) (words wordsList)) 
+  if (outputType == "y") 
+    then writeFile outputFile (printKwic (toWords titlesList) (words wordsList))
+    else writeFile outputFile (concatList (alignedOutput (kwic (words wordsList) (toWords titlesList))))
 
