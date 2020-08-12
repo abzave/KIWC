@@ -1,9 +1,9 @@
-Transporte público
+Transporte publico
 Seis medios de transporte para viajar
 Servicios de transporte
-Consejo de transporte público
+Consejo de transporte publico
 Unidad de transporte
-Sistema de transporte definición
+Sistema de transporte definicion
 Plan nacional de transporte multimodal
 Tribunal administrativo de transporte
-Transportede materiales peligrosos
+Transporte de materiales peligrosos

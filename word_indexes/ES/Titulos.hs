@@ -1,7 +1,7 @@
-La mejor película del mundo
-Significado de película
-La película que te enloquecerá
-La verdadera historia detrás de la película Wonder
-Preparan la mejor película para el próximo año
-Adivina la película
-Contagio, la película que predijo el coronavirus
+La mejor pelicula del mundo
+Significado de pelicula
+La pelicula que te enloquecera
+La verdadera historia detras de la pelicula Wonder
+Preparan la mejor pelicula para el próximo año
+Adivina la pelicula
+Contagio, la pelicula que predijo el coronavirus
