@@ -1,7 +1,7 @@
 {-
 Module      :  Main module of KWIC implementation
-
-Maintainer  :  <email>
+Copyright   :  Abraham Meza, Antony Artavia, María Paula Chaves
+Maintainer  :  abrahammvtec@gmail.com, antonyartavia59@gmail.com, mia.paula00@gmail.com
 Stability   :  frozen
 Portability :  portable
 
@@ -69,14 +69,6 @@ kwic notSignificants = nub . sort . concat . map pre where
 kwicTitles notSignificants = nub . sort . concat . map pre where
   pre ys = map putSpaces $ titSigRotations (sep $ words ys) notSignificants
 
--- sequence_ tomada de Hudak, Peterson, Fasel. A Gentle Introduction to Haskell
--- 98
-{- sequence_ = foldr (>>) (return ())
-
-sequence_ []     = return ()
-sequence_ (a:as) = do a
-                      sequence as
--}
 
 uppercaseSignificant stringList = [stringList !! 0] ++ 
   [uppercaseWord ++ " " ++ originalList] ++ drop 2 stringList where
@@ -99,11 +91,8 @@ alignedOutput rotationList = result where
 
 concatList list = intercalate "\n" list
 
--- Intentos para ver cómo sacar cada rotación en una línea aparte...
--- printKwic ts = [putStrLn t | t <- kwic ts]  -- esta funciona
-printKwic ts ns = concatList $ kwic ns ts -- esta también funciona 
--- (es lo mismo...)
 
+printKwic ts ns = concatList $ kwic ns ts 
 printKwicTitles ts ns = concatList $ kwic ns ts
 
 askFileName message = do
